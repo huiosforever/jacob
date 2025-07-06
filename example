@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")  # <-- Add this line
-import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="VC Crypto Deal Analyzer", layout="wide")
 
@@ -12,10 +9,10 @@ st.title("🪙 VC Crypto Deal Analyzer (Bay Street Framework)")
 # 1. Executive Summary
 st.header("1. Executive Summary")
 st.markdown("""
-- **Sector**: DeFi
-- **Thesis**: A decentralized derivatives platform with strong token utility and emissions control.
-- **Key Risks**: Token unlocks begin in 3 months; smart contracts unaudited.
-- **Exit Pathways**: CEX listing (Binance), DEX liquidity mining, potential acquisition by Layer 2 protocol.
+- **Sector**: DeFi  
+- **Thesis**: A decentralized derivatives platform with strong token utility and emissions control.  
+- **Key Risks**: Token unlocks begin in 3 months; smart contracts unaudited.  
+- **Exit Pathways**: CEX listing (Binance), DEX liquidity mining, potential acquisition by Layer 2 protocol.  
 """)
 
 # 2. Document Checklist
@@ -74,10 +71,10 @@ chart_titles = [
 
 for i, title in enumerate(chart_titles):
     st.subheader(f"Chart {i+1}: {title}")
-    fig, ax = plt.subplots()
-    x = np.linspace(1, 100, 100)
-    y = np.random.normal(loc=100, scale=10, size=100).cumsum() + np.random.rand(100) * 20
-    ax.plot(x, y)
-    ax.set_title(title)
-    st.pyplot(fig)
+    # Generate fake data
+    df = pd.DataFrame({
+        "x": np.linspace(1, 100, 100),
+        "value": np.random.normal(loc=100, scale=10, size=100).cumsum()
+    })
+    st.line_chart(df.set_index("x"))
     st.divider()
