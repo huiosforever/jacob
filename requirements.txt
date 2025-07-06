@@ -7,16 +7,7 @@ numpy>=1.24
 
 # Charting
 matplotlib>=3.7
+pillow>=9.0
 
 # Optional: Security / API integrations (future)
 requests>=2.31
-
-# Add this to requirements.txt
-pillow>=9.0
-
-# Core framework
-streamlit==1.35.0
-
-# Data manipulation
-pandas>=2.0
-numpy>=1.24
