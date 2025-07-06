@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="VC Crypto Deal Analyzer", layout="wide")
 
@@ -44,7 +46,7 @@ with col2:
     - **30D Volatility**: 44%
     """)
 
-# 4. Timeline
+# 4. Diligence Timeline
 st.header("4. Diligence Timeline")
 timeline = [
     ("Week 1", "Whitepaper + Token Model Review"),
@@ -57,3 +59,23 @@ st.table(pd.DataFrame(timeline, columns=["Week", "Milestone"]))
 # 5. Summary
 st.header("5. Summary")
 st.success("This protocol demonstrates strong emissions control and ecosystem fit but requires further review of its audit and unlock schedule.")
+
+# 6. Charts & Visualizations
+st.header("6. Charts & Visualizations")
+
+chart_titles = [
+    "Token Price Simulation", "Treasury Balance Over Time", "Dev Activity Heatmap", "User Growth Curve",
+    "FDV vs TVL", "Token Supply Inflation", "Top Holder Concentration", "DEX vs CEX Volume",
+    "Protocol Revenue YoY", "Staking Participation Rate", "Bridge Usage", "Chain Gas Fees (last 30d)",
+    "Validator Count Over Time", "Security Incidents Timeline", "Public Comps Performance"
+]
+
+for i, title in enumerate(chart_titles):
+    st.subheader(f"Chart {i+1}: {title}")
+    fig, ax = plt.subplots()
+    x = np.linspace(1, 100, 100)
+    y = np.random.normal(loc=100, scale=10, size=100).cumsum() + np.random.rand(100) * 20
+    ax.plot(x, y)
+    ax.set_title(title)
+    st.pyplot(fig)
+    st.divider()
