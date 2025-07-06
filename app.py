@@ -1,12 +1,60 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import time
 
 st.set_page_config(page_title="VC Crypto Deal Analyzer", layout="wide")
-
 st.title("🪙 VC Crypto Deal Analyzer (Bay Street Framework)")
 
-# 1. Executive Summary
+# -------------------------------
+# Sidebar Controls
+# -------------------------------
+
+st.sidebar.header("🔧 Chart Controls")
+
+category_map = {
+    "Market Dynamics": [
+        "Token Price Simulation", "User Growth Curve", "FDV vs TVL", "DEX vs CEX Volume"
+    ],
+    "Token Health": [
+        "Treasury Balance Over Time", "Token Supply Inflation", "Top Holder Concentration", "Staking Participation Rate"
+    ],
+    "Protocol Performance": [
+        "Protocol Revenue YoY", "Bridge Usage", "Chain Gas Fees (last 30d)", "Public Comps Performance"
+    ],
+    "Governance & Security": [
+        "Dev Activity Heatmap", "Validator Count Over Time", "Security Incidents Timeline"
+    ]
+}
+
+selected_category = st.sidebar.selectbox("📊 Chart Category", list(category_map.keys()))
+chart_type = st.sidebar.radio("📈 Chart Type", ["line", "bar", "area"])
+animate = st.sidebar.checkbox("🔁 Animate (Simulated Data)", value=False)
+sleep_time = st.sidebar.slider("⏱️ Update Delay (sec)", min_value=0, max_value=5, value=0)
+
+# -------------------------------
+# Chart Generator
+# -------------------------------
+
+def generate_chart(chart_title, chart_type="line"):
+    df = pd.DataFrame({
+        "x": np.linspace(1, 100, 100),
+        "value": np.random.normal(loc=100, scale=10, size=100).cumsum()
+    }).set_index("x")
+
+    st.markdown(f"**{chart_title}**")
+
+    if chart_type == "line":
+        st.line_chart(df)
+    elif chart_type == "bar":
+        st.bar_chart(df)
+    elif chart_type == "area":
+        st.area_chart(df)
+
+# -------------------------------
+# Main Content Sections
+# -------------------------------
+
 st.header("1. Executive Summary")
 st.markdown("""
 - **Sector**: DeFi  
@@ -15,7 +63,6 @@ st.markdown("""
 - **Exit Pathways**: CEX listing (Binance), DEX liquidity mining, potential acquisition by Layer 2 protocol.  
 """)
 
-# 2. Document Checklist
 st.header("2. Document Checklist")
 checklist_data = {
     "Section": [
@@ -26,7 +73,6 @@ checklist_data = {
 }
 st.dataframe(pd.DataFrame(checklist_data))
 
-# 3. Quantamental Metrics
 st.header("3. Quantamental Metrics")
 col1, col2 = st.columns(2)
 
@@ -45,7 +91,6 @@ with col2:
     - **30D Volatility**: 44%
     """)
 
-# 4. Diligence Timeline
 st.header("4. Diligence Timeline")
 timeline = [
     ("Week 1", "Whitepaper + Token Model Review"),
@@ -55,26 +100,21 @@ timeline = [
 ]
 st.table(pd.DataFrame(timeline, columns=["Week", "Milestone"]))
 
-# 5. Summary
 st.header("5. Summary")
 st.success("This protocol demonstrates strong emissions control and ecosystem fit but requires further review of its audit and unlock schedule.")
 
-# 6. Charts & Visualizations
+# -------------------------------
+# Chart Grid (4 Columns)
+# -------------------------------
+
 st.header("6. Charts & Visualizations")
 
-chart_titles = [
-    "Token Price Simulation", "Treasury Balance Over Time", "Dev Activity Heatmap", "User Growth Curve",
-    "FDV vs TVL", "Token Supply Inflation", "Top Holder Concentration", "DEX vs CEX Volume",
-    "Protocol Revenue YoY", "Staking Participation Rate", "Bridge Usage", "Chain Gas Fees (last 30d)",
-    "Validator Count Over Time", "Security Incidents Timeline", "Public Comps Performance"
-]
-
-for i, title in enumerate(chart_titles):
-    st.subheader(f"Chart {i+1}: {title}")
-    # Generate fake data
-    df = pd.DataFrame({
-        "x": np.linspace(1, 100, 100),
-        "value": np.random.normal(loc=100, scale=10, size=100).cumsum()
-    })
-    st.line_chart(df.set_index("x"))
-    st.divider()
+charts_to_show = category_map[selected_category]
+for row in range(0, len(charts_to_show), 4):
+    cols = st.columns(4)
+    for i in range(4):
+        if row + i < len(charts_to_show):
+            with cols[i]:
+                generate_chart(charts_to_show[row + i], chart_type)
+                if animate and sleep_time > 0:
+                    time.sleep(sleep_time)
